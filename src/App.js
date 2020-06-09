@@ -1,5 +1,6 @@
 import React from 'react';
 import { Header } from './components/Header';
+import { Footer } from './components/Footer';
 import { Stats } from './components/Stats';
 import { MovementList } from './components/MovementList';
 
@@ -13,6 +14,7 @@ function App() {
       <Header />
       <Stats />
       <MovementList />
+      <Footer />
     </GlobalProvider>
   );
 }

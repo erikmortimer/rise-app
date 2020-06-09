@@ -8,6 +8,13 @@ export const Stats = () => {
     const [seconds, setSeconds] = useState('00');
     const [minutes, setMinutes] = useState('00');
 
+    const [start, setStart] = useState(false);
+    const [stop, setStop] = useState(true);
+    const [duration, setDuration] = useState(false);
+    const [movement, setMovement] = useState(false);
+
+    const [timeinterval, setTimeinterval] = useState();
+
     const { addMovement } = useContext(GlobalContext);
 
     const onSubmit = () => {
@@ -37,13 +44,14 @@ export const Stats = () => {
                 setMinutes(('0' + t.minutes).slice(-2));
                 setSeconds(('0' + t.seconds).slice(-2));
                 if (t.total <= 0) {
-                    clearInterval(timeinterval);
+                    setTimeinterval(clearInterval(timeinterval));
                     addMovement(newMovement);
                 }
             }
 
             updateClock();
-            var timeinterval = setInterval(updateClock, 1000);
+            //var timeinterval = setInterval(updateClock, 1000);
+            setTimeinterval(setInterval(updateClock, 1000));
         }
 
         const currentTime = Date.parse(new Date()); 
@@ -56,24 +64,31 @@ export const Stats = () => {
 
     return (
         <>
-        <div className="rounded-lg m-4 p-6 bg-blue-200 shadow-lg">
+        <div className="rounded-lg m-4 p-6 bg-blue-300 shadow-lg">
             <h2 className="text-4xl text-center mb-4">{minutes}:{seconds}</h2>
             <div className="grid grid-cols-2 gap-6 row-gap-6">
-                <select value={amount} id="time" onChange={(e) => setAmount(e.target.value)}>
+                <select disabled={duration} value={amount} id="time" onChange={(e) => setAmount(e.target.value)}>
                     <option value="10">10 Minutes</option>
                     <option value="15">15 Minutes</option>
                     <option value="30">30 Minutes</option>
                 </select>
-                <select value={text} id="position" onChange={(e) => setText(e.target.value)}>
+                <select disabled={movement} value={text} id="position" onChange={(e) => setText(e.target.value)}>
                     <option value="Sit">Sitting</option>
                     <option value="Stand">Standing</option>
                 </select>
-                <button className="text-green-200 bg-green-600 m-2 px-4 py-2 rounded" onClick={() => {
+                <button disabled={start} className="disabled:bg-gray-500 text-green-100 bg-green-700 m-2 px-4 py-2 rounded" onClick={() => {
                     //TODO: add disable to button after clicking start, vic verca with stop button
                     onSubmit();
+                    setStart(true); setStop(false);
+                    setMovement(true); setDuration(true);
                 }}>Start
                 </button>
-                <button className="text-red-200 bg-red-600 m-2 px-4 py-2 rounded">Stop</button>
+                <button disabled={stop} className="disabled:bg-gray-500 text-red-100 bg-red-700 m-2 px-4 py-2 rounded" onClick={() => {
+                    setTimeinterval(clearInterval(timeinterval));
+                    setStart(false); setStop(true);
+                    setMovement(false); setDuration(false);
+                    setMinutes('00'); setSeconds('00');
+                }}>Stop</button>
             </div>
         </div>
         </>
