@@ -23,9 +23,17 @@ export const GlobalProvider = ({ children }) => {
         });
     }
 
+    function removeMovement(movement){
+        dispatch({
+            type: 'REMOVE_MOVEMENT',
+            payload: movement
+        });
+    }
+
     return(<GlobalContext.Provider value={{
         movements: state.movements,
-        addMovement
+        addMovement,
+        removeMovement
     }}>
         {children}
     </GlobalContext.Provider>);
