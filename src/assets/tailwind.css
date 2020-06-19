@@ -3,7 +3,7 @@
 @import "tailwindcss/utilities";
 
 body {
-    @apply flex flex-col items-center justify-center min-h-screen bg-blue-600;
+    @apply flex flex-col items-center justify-center min-h-screen bg-blue-800;
 }
 
 .list {
