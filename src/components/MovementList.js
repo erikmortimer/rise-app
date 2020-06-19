@@ -9,7 +9,8 @@ export const MovementList = () => {
 
     return (
         <>
-        <h3 className="text-3xl text-blue-400 text-center">History</h3>
+        <h3 className="text-3xl text-center text-blue-300">History</h3>
+        <br></br>
         <ul className="list">
             {movements.map(movement => (
                 <Movement key={movement.id} movement={movement}/>
