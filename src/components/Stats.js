@@ -1,15 +1,23 @@
 import React, {useState, useContext, useEffect} from 'react';
 import { GlobalContext } from '../context/GlobalState';
+import { Howl, Howler } from 'howler';
+import alarm_sound from '../assets/alarm_sound.wav';
 
 export const Stats = () => {
     
     const [text, setText] = useState('Sit');
     const [amount, setAmount] = useState(10);
     const [seconds, setSeconds] = useState(0);
-    const [minutes, setMinutes] = useState(10);
+    const [minutes, setMinutes] = useState(amount);
 
 	const [isActive, setIsActive] = useState(false);
     const [isStarted, setIsStarted] = useState(false);
+    const [toggleBtn, setToggleBtn] = useState('Start');
+    const alarm = new Howl({
+        src: [alarm_sound],
+        loop: true,
+        volume: 0.4
+    });
     //const [start, setStart] = useState(false);
     //const [stop, setStop] = useState(true);
     //const [duration, setDuration] = useState(false);
@@ -32,7 +40,19 @@ export const Stats = () => {
     }
 
     function toggle() {
-        setIsActive(!isActive);
+        switch(toggleBtn){
+            case 'Start':
+                setToggleBtn('Pause'); setIsActive(true);
+                break;
+            case 'Pause':
+                setToggleBtn('Start'); setIsActive(false);
+                break;
+            case 'OK':
+                setToggleBtn('Start');
+                Howler.stop();
+                reset();
+                break;
+        }
     }
 
     function reset() {
@@ -53,7 +73,8 @@ export const Stats = () => {
                     if (minutes === 0) {
                         clearInterval(interval);
                         onSubmit();
-                        reset();
+                        alarm.play();
+                        setIsActive(false); setToggleBtn('OK');
                     } else {
                         setMinutes(minutes - 1);
                         setSeconds(59);
@@ -89,7 +110,7 @@ export const Stats = () => {
                     <option value="Stand">Standing</option>
                 </select>
                 <button className="px-4 py-2 m-2 text-white bg-blue-600 rounded-sm" onClick={toggle}>
-					{isActive ? 'Pause' : 'Start'}
+					{toggleBtn}
                 </button>
                 <button className="px-4 py-2 m-2 bg-white rounded-sm text-black-500" onClick={reset}>
 					Reset
