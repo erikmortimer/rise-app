@@ -58,8 +58,8 @@ export const Stats = () => {
     function reset() {
         setSeconds(0);
         setMinutes(amount);
-        setIsActive(false);
-        setIsStarted(false);
+        setIsActive(false); setIsStarted(false);
+        setToggleBtn('Start');
     }
 
     useEffect(() => {
